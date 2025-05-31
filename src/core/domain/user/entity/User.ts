@@ -1,9 +1,10 @@
 import Entity from "../../../generics/Entity";
 import Identity from "../../../generics/Identity";
+import { Email } from "../object-value/Email";
 
 type UserProps = {
     name: string;
-    email: string;
+    email: Email;
     password: string;
 }
 
@@ -16,15 +17,27 @@ export class User extends Entity<UserProps> {
         return new User({ ...props }, id);
     }
 
-    getName(): string {
+    get name(): string {
         return this.props.name;
     }
 
-    getEmail(): string {
+    get email(): Email {
         return this.props.email;
     }
 
-    getPassword(): string {
+    get password(): string {
         return this.props.password;
+    }
+
+    set name(name: string) {
+        this.props.name = name;
+    }
+
+    set email(email: Email) {
+        this.props.email = email;
+    }
+
+    set password(password: string) {
+        this.props.password = password;
     }
 }
