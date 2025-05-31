@@ -2,18 +2,20 @@
   "name": "sistema-dindin",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "lint": "eslint . --ext .ts",
     "format": "prettier --write .",
     "dev": "tsx watch src/main.ts",
     "build": "tsc",
-    "start": "node dist/main.js",
+    "start": "node dist/main.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/node": "^22.15.29",
     "@typescript-eslint/eslint-plugin": "^8.33.0",
     "@typescript-eslint/parser": "^8.33.0",
     "eslint": "^9.28.0",
