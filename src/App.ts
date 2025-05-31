@@ -26,11 +26,5 @@ export class App {
       await app.close();
       process.exit(0);
     });
-
-    process.on('SIGTERM', async () => {
-      logger.info('SIGTERM signal received: shutting down...');
-      await app.close();
-      process.exit(0);
-    });
   }
 }
