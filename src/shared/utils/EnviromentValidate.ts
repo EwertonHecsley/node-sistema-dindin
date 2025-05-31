@@ -1,11 +1,12 @@
 import { z } from 'zod';
+import { logger } from './logger';
 
-export default class EviromentValidator {
+export default class EnviromentValidator {
   private readonly envSchema = z
     .object({
       NODE_ENV: z.enum(['development', 'production', 'test']),
       PORT: z.string().regex(/^\d+$/).transform(Number),
-      DATABASE_URL: z.string().url(),
+      //DATABASE_URL: z.string().url(),
     })
     .passthrough();
 
@@ -13,7 +14,7 @@ export default class EviromentValidator {
     const result = this.envSchema.safeParse(process.env);
 
     if (!result.success) {
-      console.log(result.error.format());
+      logger.error(result.error.format());
       process.exit(1);
     }
 
@@ -21,16 +22,16 @@ export default class EviromentValidator {
 
     switch (env.NODE_ENV) {
       case 'development':
-        console.log('Environment is set to development.');
+        logger.info('Environment is set to development.');
         break;
       case 'production':
-        console.log('Environment is set to production.');
+        logger.info('Environment is set to production.');
         break;
       case 'test':
-        console.log('Environment is set to test.');
+        logger.info('Environment is set to test.');
         break;
     }
 
-    console.log('Validating environment variables');
+    logger.info('Validating environment variables');
   }
 }
