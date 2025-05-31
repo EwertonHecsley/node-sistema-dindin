@@ -1,15 +1,15 @@
-import Identity from "./Identity";
+import Identity from './Identity';
 
 export default class Entity<T> {
-    private entityId: Identity;
-    protected props: T;
+  private entityId: Identity;
+  protected props: T;
 
-    protected constructor(props: T, id?: Identity) {
-        this.props = props;
-        this.entityId = id ?? new Identity();
-    }
+  protected constructor(props: T, id?: Identity) {
+    this.props = props;
+    this.entityId = id ?? new Identity();
+  }
 
-    getValueId(): Identity {
-        return this.entityId;
-    }
+  getValueId(): Identity {
+    return this.entityId;
+  }
 }
