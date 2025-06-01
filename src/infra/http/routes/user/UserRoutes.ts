@@ -15,5 +15,9 @@ export class UserRoutes {
     app.get('/user/v1', {
       handler: this.controller.list.bind(this.controller),
     });
+
+    app.get('/user/v1/:id', {
+      handler: this.controller.index.bind(this.controller),
+    });
   }
 }
