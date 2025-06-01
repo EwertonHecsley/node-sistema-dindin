@@ -6,7 +6,7 @@ type UserProps = {
   name: string;
   email: Email;
   password: string;
-  createdAt?: Date
+  createdAt?: Date;
 };
 
 export class User extends Entity<UserProps> {
@@ -31,7 +31,7 @@ export class User extends Entity<UserProps> {
   }
 
   get createdAt(): Date {
-    return this.props.createdAt!
+    return this.props.createdAt!;
   }
 
   set name(name: string) {

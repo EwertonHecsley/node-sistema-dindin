@@ -1,11 +1,11 @@
-import PrismaService from "./PrismaService";
+import PrismaService from './PrismaService';
 
 let prisma: PrismaService;
 
 export default function getPrismaInstance(): PrismaService {
-    if (!prisma) {
-        prisma = new PrismaService();
-    }
+  if (!prisma) {
+    prisma = new PrismaService();
+  }
 
-    return prisma;
+  return prisma;
 }

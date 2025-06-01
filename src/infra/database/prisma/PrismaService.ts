@@ -1,11 +1,11 @@
-import { PrismaClient } from "../../../../generated/prisma";
+import { PrismaClient } from '../../../../generated/prisma';
 
 export default class PrismaService extends PrismaClient {
-    async connect() {
-        await this.$connect();
-    }
+  async connect() {
+    await this.$connect();
+  }
 
-    async disconnect() {
-        await this.$disconnect();
-    }
+  async disconnect() {
+    await this.$disconnect();
+  }
 }
