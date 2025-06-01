@@ -20,7 +20,7 @@ export class UserPrismaMappers {
         name: entity.name,
         email: Email.create(entity.email),
         password: entity.password,
-        createdAt: entity.createdAt
+        createdAt: entity.createdAt,
       },
       new Identity(entity.id),
     );

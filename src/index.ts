@@ -5,7 +5,7 @@ import { UserRoutes } from './infra/http/routes/user/UserRoutes';
 
 const app = fastify();
 
-const userRepository = new UserPrismaRepository()
+const userRepository = new UserPrismaRepository();
 const userController = new UserController(userRepository);
 const userRoutes = new UserRoutes(userController);
 
