@@ -11,5 +11,9 @@ export class UserRoutes {
             preHandler: validateBody(schemaUserDto),
             handler: this.controller.store.bind(this.controller)
         });
+
+        app.get('/user/v1', {
+            handler: this.controller.list.bind(this.controller)
+        })
     }
 }
