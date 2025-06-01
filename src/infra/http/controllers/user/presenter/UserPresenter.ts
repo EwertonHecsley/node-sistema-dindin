@@ -6,7 +6,13 @@ export class UserPresenter {
       id: entity.getValueId().getValueId(),
       name: entity.name,
       email: entity.email.getValueEmail(),
-      createdAt: entity.createdAt,
+      createdAt: entity.createdAt.toLocaleDateString('pt-br', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+      }),
     };
   }
 }

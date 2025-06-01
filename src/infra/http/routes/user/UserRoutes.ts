@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify';
 import { UserController } from '../../controllers/user/UserController';
 import { validateBody } from '../../middlewares/validate';
 import { schemaUserDto } from '../../controllers/user/dto/schemaUserDto';
+import { schemaUserUpdateDto } from '../../controllers/user/dto/schemaUserUpdate.Dto';
 
 export class UserRoutes {
   constructor(private readonly controller: UserController) {}
@@ -14,6 +15,19 @@ export class UserRoutes {
 
     app.get('/user/v1', {
       handler: this.controller.list.bind(this.controller),
+    });
+
+    app.get('/user/v1/:id', {
+      handler: this.controller.index.bind(this.controller),
+    });
+
+    app.put('/user/v1/:id', {
+      preHandler: validateBody(schemaUserUpdateDto),
+      handler: this.controller.update.bind(this.controller),
+    });
+
+    app.delete('/user/v1/:id', {
+      handler: this.controller.destroy.bind(this.controller),
     });
   }
 }

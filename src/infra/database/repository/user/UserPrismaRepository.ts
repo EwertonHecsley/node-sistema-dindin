@@ -13,7 +13,7 @@ export class UserPrismaRepository implements UserRepository {
   }
 
   async findAll(): Promise<User[]> {
-    const result = await this.prisma.user.findMany();
+    const result = await this.prisma.user.findMany({ orderBy: { name: 'asc' } });
     return result.map(UserPrismaMappers.toDomain);
   }
 
