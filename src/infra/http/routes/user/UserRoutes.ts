@@ -25,5 +25,9 @@ export class UserRoutes {
       preHandler: validateBody(schemaUserUpdateDto),
       handler: this.controller.update.bind(this.controller),
     });
+
+    app.delete('/user/v1/:id', {
+      handler: this.controller.destroy.bind(this.controller),
+    });
   }
 }
