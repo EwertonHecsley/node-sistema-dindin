@@ -1,9 +1,9 @@
-import { BadRequest } from '../../../../shared/errors/custom/BadRequest';
-import { NotFound } from '../../../../shared/errors/custom/NorFound';
-import { Either, left, right } from '../../../../shared/utils/Either';
-import { Encrypter } from '../../../../shared/utils/Encrypter';
-import { Email } from '../object-value/Email';
+import { BadRequest } from '@/shared/errors/custom/BadRequest';
+import { NotFound } from '@/shared/errors/custom/NorFound';
+import { Either, left, right } from '@/shared/utils/Either';
+import { Encrypter } from '@/shared/utils/Encrypter';
 import { UserRepository } from '../repository/UserRepository';
+import { Email } from '../object-value/Email';
 
 type Request = {
   id: string;
