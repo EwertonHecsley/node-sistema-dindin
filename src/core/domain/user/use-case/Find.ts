@@ -14,7 +14,7 @@ export class FindUserUseCase {
 
   async execute({ id }: Request): Promise<Response> {
     const user = await this.userRepository.findById(id);
-    if (!user) return left(new NotFound('User not found'));
+    if (!user) return left(new NotFound('User not found.'));
 
     return right(user);
   }
