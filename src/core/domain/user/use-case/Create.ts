@@ -1,10 +1,9 @@
-import bcrypt from 'bcrypt';
-import { BadRequest } from '../../../../shared/errors/custom/BadRequest';
-import { Either, left, right } from '../../../../shared/utils/Either';
+import { BadRequest } from '@/shared/errors/custom/BadRequest';
+import { Either, left, right } from '@/shared/utils/Either';
 import { User } from '../entity/User';
-import { Email } from '../object-value/Email';
+import { Encrypter } from '@/shared/utils/Encrypter';
 import { UserRepository } from '../repository/UserRepository';
-import { Encrypter } from '../../../../shared/utils/Encrypter';
+import { Email } from '../object-value/Email';
 
 type Request = {
   name: string;

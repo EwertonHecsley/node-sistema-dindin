@@ -1,5 +1,5 @@
-import { NotFound } from '../../../../shared/errors/custom/NorFound';
-import { Either, left, right } from '../../../../shared/utils/Either';
+import { NotFound } from '@/shared/errors/custom/NorFound';
+import { Either, left, right } from '@/shared/utils/Either';
 import { UserRepository } from '../repository/UserRepository';
 
 type Request = {

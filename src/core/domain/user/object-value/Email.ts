@@ -1,4 +1,4 @@
-import { BadRequest } from '../../../../shared/errors/custom/BadRequest';
+import { BadRequest } from '@/shared/errors/custom/BadRequest';
 
 export class Email {
   private constructor(private readonly value: string) {}

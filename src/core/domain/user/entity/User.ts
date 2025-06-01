@@ -1,6 +1,6 @@
-import Entity from '../../../generics/Entity';
-import Identity from '../../../generics/Identity';
+import Entity from '@/core/generics/Entity';
 import { Email } from '../object-value/Email';
+import Identity from '@/core/generics/Identity';
 
 type UserProps = {
   name: string;

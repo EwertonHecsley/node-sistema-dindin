@@ -1,4 +1,4 @@
-import { Either, left, right } from '../../../../shared/utils/Either';
+import { Either, left, right } from '@/shared/utils/Either';
 import { User } from '../entity/User';
 import { UserRepository } from '../repository/UserRepository';
 
