@@ -6,6 +6,7 @@ type UserProps = {
   name: string;
   email: Email;
   password: string;
+  createdAt?: Date
 };
 
 export class User extends Entity<UserProps> {
@@ -29,6 +30,10 @@ export class User extends Entity<UserProps> {
     return this.props.password;
   }
 
+  get createdAt(): Date {
+    return this.props.createdAt!
+  }
+
   set name(name: string) {
     this.props.name = name;
   }
@@ -39,5 +44,9 @@ export class User extends Entity<UserProps> {
 
   set password(password: string) {
     this.props.password = password;
+  }
+
+  set createdAt(date: Date) {
+    this.props.createdAt = date;
   }
 }
