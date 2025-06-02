@@ -8,25 +8,25 @@ export class UserRoutes {
   constructor(private readonly controller: UserController) {}
 
   async register(app: FastifyInstance) {
-    app.post('/user/v1', {
+    app.post('/v1/user', {
       preHandler: validateBody(schemaUserDto),
       handler: this.controller.store.bind(this.controller),
     });
 
-    app.get('/user/v1', {
+    app.get('/v1/user', {
       handler: this.controller.list.bind(this.controller),
     });
 
-    app.get('/user/v1/:id', {
+    app.get('/v1/user/:id', {
       handler: this.controller.index.bind(this.controller),
     });
 
-    app.put('/user/v1/:id', {
+    app.put('/v1/user/:id', {
       preHandler: validateBody(schemaUserUpdateDto),
       handler: this.controller.update.bind(this.controller),
     });
 
-    app.delete('/user/v1/:id', {
+    app.delete('/v1/user/:id', {
       handler: this.controller.destroy.bind(this.controller),
     });
   }

@@ -10,6 +10,8 @@ import { schemaUserParamsDto } from './dto/schemaUserParamsDto';
 import { UpdateUserUseCase } from '@/core/domain/user/use-case/Update';
 import { UpdateUserDto } from './dto/schemaUserUpdate.Dto';
 import { DeleteUserUseCase } from '@/core/domain/user/use-case/Delete';
+import { LoginUserDto } from './dto/schemaUserLoginDto';
+import { Encrypter } from '@/shared/utils/Encrypter';
 
 export class UserController {
   private readonly createUser: CreateUserUseCase;
@@ -17,6 +19,7 @@ export class UserController {
   private readonly findUser: FindUserUseCase;
   private readonly updateUser: UpdateUserUseCase;
   private readonly deleteUser: DeleteUserUseCase;
+  private readonly encrypterService: Encrypter;
 
   constructor(private readonly userRepository: UserRepository) {
     this.createUser = new CreateUserUseCase(this.userRepository);
@@ -24,6 +27,33 @@ export class UserController {
     this.findUser = new FindUserUseCase(this.userRepository);
     this.updateUser = new UpdateUserUseCase(this.userRepository);
     this.deleteUser = new DeleteUserUseCase(this.userRepository);
+    this.encrypterService = new Encrypter();
+  }
+
+  async login(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const { email, password } = request.body as LoginUserDto;
+
+    const user = await this.userRepository.findByEmail(email);
+    if (!user) {
+      logger.error('User not found.');
+      reply.status(404).send({ message: 'Invalid credentials.' });
+      return;
+    }
+
+    const passwordMatch = await this.encrypterService.compare(password, user.password);
+    if (!passwordMatch) {
+      logger.error('Invalid password.');
+      reply.status(401).send({ message: 'Invalid credentials.' });
+      return;
+    }
+
+    const token = request.server.jwtService.sign({ userId: user.getValueId().getValueId() });
+
+    reply.status(200).send({
+      message: 'Login successful.',
+      user: UserPresenter.toHTTP(user),
+      token,
+    });
   }
 
   async store(request: FastifyRequest, reply: FastifyReply): Promise<void> {

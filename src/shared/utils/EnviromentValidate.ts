@@ -7,6 +7,7 @@ export default class EnviromentValidator {
       NODE_ENV: z.enum(['development', 'production', 'test']),
       PORT: z.string().regex(/^\d+$/).transform(Number),
       DATABASE_URL: z.string().url(),
+      JWT_SECRET: z.string().min(1),
     })
     .passthrough();
 
