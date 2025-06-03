@@ -11,4 +11,25 @@ export class CategoryPrismaRepository implements CategoryRepository {
     const result = await this.prisma.category.create({ data });
     return CategoryPrismaMappers.toDomain(result);
   }
+
+  async findById(id: string): Promise<Category | null> {
+    const result = await this.prisma.category.findFirst({ where: { id } });
+    if (!result) return null;
+    return CategoryPrismaMappers.toDomain(result);
+  }
+
+  async findAll(): Promise<Category[]> {
+    const result = await this.prisma.category.findMany();
+    return result.map(CategoryPrismaMappers.toDomain);
+  }
+
+  async save(entity: Category): Promise<void> {
+    const id = entity.getValueId().getValueId();
+    const data = CategoryPrismaMappers.toDatabase(entity);
+    await this.prisma.category.update({ data, where: { id } })
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.category.delete({ where: { id } });
+  }
 }
