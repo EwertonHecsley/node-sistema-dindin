@@ -12,10 +12,9 @@ export class CategoryPrismaRepository implements CategoryRepository {
     return CategoryPrismaMappers.toDomain(result);
   }
 
-  async findById(id: string): Promise<Category | null> {
-    const result = await this.prisma.category.findFirst({ where: { id } });
-    if (!result) return null;
-    return CategoryPrismaMappers.toDomain(result);
+  async findById(id: string, user_id: string): Promise<Category | null> {
+    const result = await this.prisma.category.findFirst({ where: { id, user_id } });
+    return result ? CategoryPrismaMappers.toDomain(result) : null;
   }
 
   async findAll(): Promise<Category[]> {

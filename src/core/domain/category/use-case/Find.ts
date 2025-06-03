@@ -21,11 +21,9 @@ export class FindCategoryUseCase {
     const userExist = await this.userRepository.findById(user_id);
     if (!userExist) return left(new NotFound('User not found.'));
 
-    const caterorys = await this.categoryRepository.findAll();
-    const result = caterorys.filter(element => element.user_id == user_id);
-    const resultOk = result.find(element => element.getValueId().getValueId() == id);
+    const result = await this.categoryRepository.findById(id, user_id);
+    if (!result) return left(new NotFound('Category not found.'));
 
-    if (!resultOk) return left(new NotFound('Category not found.'));
-    return right(resultOk);
+    return right(result);
   }
 }

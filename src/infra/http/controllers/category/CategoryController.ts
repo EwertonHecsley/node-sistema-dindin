@@ -8,6 +8,7 @@ import { logger } from '@/shared/utils/logger';
 import { FindAllCategoryUseCase } from '@/core/domain/category/use-case/FindAll';
 import { schemaCategoryParamsDto } from './dto/schemaCategoryParamsDto';
 import { FindCategoryUseCase } from '@/core/domain/category/use-case/Find';
+import { getUserIdOrThrow } from '@/shared/utils/getUserIdOrThrow';
 
 export class CategoryController {
   private readonly createCategory: CreateCategoryUseCase;
@@ -25,11 +26,8 @@ export class CategoryController {
 
   async store(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const { description } = request.body as CreateCategoryDto;
-    const user_id = request.user?.userId;
-    if (!user_id) {
-      reply.status(401).send({ error: 'Unauthorized.' });
-      return;
-    }
+    const user_id = getUserIdOrThrow(request, reply);
+    if (!user_id) return;
 
     const result = await this.createCategory.execute({ description, user_id });
     if (result.isLeft()) {
@@ -47,11 +45,8 @@ export class CategoryController {
   }
 
   async list(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    const user_id = request.user?.userId;
-    if (!user_id) {
-      reply.status(401).send({ error: 'Unauthorized.' });
-      return;
-    }
+    const user_id = getUserIdOrThrow(request, reply);
+    if (!user_id) return;
 
     const result = await this.findAll.execute({ user_id });
     if (result.isLeft()) {
@@ -69,11 +64,8 @@ export class CategoryController {
   }
 
   async index(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    const user_id = request.user?.userId;
-    if (!user_id) {
-      reply.status(401).send({ error: 'Unauthorized.' });
-      return;
-    }
+    const user_id = getUserIdOrThrow(request, reply);
+    if (!user_id) return;
 
     const paramsValidate = schemaCategoryParamsDto.safeParse(request.params);
     if (!paramsValidate.success) {
