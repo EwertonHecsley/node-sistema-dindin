@@ -1,30 +1,30 @@
-import { NotFound } from "@/shared/errors/custom/NorFound";
-import { Either, left, right } from "@/shared/utils/Either";
-import { Category } from "../entity/Category";
-import { CategoryRepository } from "../repository/CategoryRepository";
-import { UserRepository } from "../../user/repository/UserRepository";
+import { NotFound } from '@/shared/errors/custom/NorFound';
+import { Either, left, right } from '@/shared/utils/Either';
+import { Category } from '../entity/Category';
+import { CategoryRepository } from '../repository/CategoryRepository';
+import { UserRepository } from '../../user/repository/UserRepository';
 
 type Request = {
-    description: string;
-    user_id: string;
-}
+  description: string;
+  user_id: string;
+};
 
 type Response = Either<NotFound, Category>;
 
 export class CreateCategoryUseCase {
-    constructor(
-        private readonly categoryRepository: CategoryRepository,
-        private readonly userRepository: UserRepository
-    ) { }
+  constructor(
+    private readonly categoryRepository: CategoryRepository,
+    private readonly userRepository: UserRepository,
+  ) {}
 
-    async execute(props: Request): Promise<Response> {
-        const userExist = await this.userRepository.findById(props.user_id);
-        if (!userExist) return left(new NotFound('User not found.'));
+  async execute(props: Request): Promise<Response> {
+    const userExist = await this.userRepository.findById(props.user_id);
+    if (!userExist) return left(new NotFound('User not found.'));
 
-        const category = Category.create({ ...props });
+    const category = Category.create({ ...props });
 
-        await this.categoryRepository.create(category);
+    await this.categoryRepository.create(category);
 
-        return right(category);
-    }
+    return right(category);
+  }
 }
