@@ -15,7 +15,9 @@ export class CategoryPrismaMappers {
   static toDomain(entity: CategoryDatabase): Category {
     return Category.create(
       {
-        ...entity,
+        description: entity.description,
+        user_id: entity.user_id,
+        createdAt: entity.createdAt,
       },
       new Identity(entity.id),
     );

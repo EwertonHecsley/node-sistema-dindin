@@ -22,7 +22,7 @@ export class CreateCategoryUseCase {
     if (!userExist) return left(new NotFound('User not found.'));
 
     const category = Category.create({ ...props });
-
+    console.log(category.createdAt);
     await this.categoryRepository.create(category);
 
     return right(category);

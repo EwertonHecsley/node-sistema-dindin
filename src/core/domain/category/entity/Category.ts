@@ -13,7 +13,7 @@ export class Category extends Entity<CategoryProps> {
   }
 
   static create(props: CategoryProps, id?: Identity): Category {
-    return new Category({ ...props }, id);
+    return new Category({ ...props, createdAt: props.createdAt ?? new Date() }, id);
   }
 
   get description(): string {
