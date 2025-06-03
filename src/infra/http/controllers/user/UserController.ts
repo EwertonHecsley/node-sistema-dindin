@@ -36,7 +36,7 @@ export class UserController {
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
       logger.error('User not found.');
-      reply.status(404).send({ message: 'Invalid credentials.' });
+      reply.status(401).send({ message: 'Invalid credentials.' });
       return;
     }
 

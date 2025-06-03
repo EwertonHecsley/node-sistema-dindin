@@ -11,5 +11,8 @@ export class CategoryRoutes {
       preHandler: validateBody(schemaCategoryDto),
       handler: this.controller.store.bind(this.controller),
     });
+    app.get('/v1/category', {
+      handler: this.controller.list.bind(this.controller),
+    });
   }
 }

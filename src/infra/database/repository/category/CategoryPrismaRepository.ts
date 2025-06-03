@@ -26,7 +26,7 @@ export class CategoryPrismaRepository implements CategoryRepository {
   async save(entity: Category): Promise<void> {
     const id = entity.getValueId().getValueId();
     const data = CategoryPrismaMappers.toDatabase(entity);
-    await this.prisma.category.update({ data, where: { id } })
+    await this.prisma.category.update({ data, where: { id } });
   }
 
   async delete(id: string): Promise<void> {
