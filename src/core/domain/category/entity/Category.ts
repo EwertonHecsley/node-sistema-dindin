@@ -39,4 +39,12 @@ export class Category extends Entity<CategoryProps> {
   set createdAt(value: Date) {
     this.props.createdAt = value;
   }
+
+  updateDescription(newDescription: string): void {
+    if (!newDescription || newDescription.trim().length === 0) {
+      throw new Error('Description cannot be empty.');
+    }
+
+    this.props.description = newDescription;
+  }
 }
