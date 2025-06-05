@@ -5,6 +5,7 @@ type CategoryProps = {
   description: string;
   user_id: string;
   createdAt?: Date;
+  transactionCont?: number;
 };
 
 export class Category extends Entity<CategoryProps> {
@@ -26,6 +27,10 @@ export class Category extends Entity<CategoryProps> {
 
   get createdAt(): Date {
     return this.props.createdAt!;
+  }
+
+  get transactionCont(): number {
+    return this.props.transactionCont || 0;
   }
 
   set description(value: string) {

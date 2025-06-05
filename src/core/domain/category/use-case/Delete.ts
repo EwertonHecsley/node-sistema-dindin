@@ -23,6 +23,11 @@ export class DeleteCategoryUseCase {
     const categoryExist = await this.categoryRepository.findById(id, user_id);
     if (!categoryExist) return left(new NotFound('Category not found.'));
 
+    if (categoryExist.transactionCont > 0)
+      return left(
+        new NotFound('Category cannot be deleted because it has transactions associated with it.'),
+      );
+
     await this.categoryRepository.delete(id);
 
     return right(true);

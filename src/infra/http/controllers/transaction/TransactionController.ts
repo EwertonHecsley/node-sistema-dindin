@@ -32,7 +32,7 @@ export class TransactionController {
 
     reply.status(201).send({
       message: 'Created transaction sucessfully.',
-      transaction: TransactionPresenter.toHTTP(result.value),
+      transaction: TransactionPresenter.toHTTP(result.value.transaction, result.value.category),
     });
     logger.info('Created transaction sucessfully.');
   }

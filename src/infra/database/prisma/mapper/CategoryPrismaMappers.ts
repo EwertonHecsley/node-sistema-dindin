@@ -1,5 +1,8 @@
 import { Category } from '@/core/domain/category/entity/Category';
-import { Category as CategoryDatabase } from '../../../../../generated/prisma';
+import {
+  Category as CategoryDatabase,
+  Transaction as TransactionDatabase,
+} from '../../../../../generated/prisma';
 import Identity from '@/core/generics/Identity';
 
 export class CategoryPrismaMappers {
@@ -12,12 +15,14 @@ export class CategoryPrismaMappers {
     };
   }
 
-  static toDomain(entity: CategoryDatabase): Category {
+  static toDomain(entity: CategoryDatabase & { Transaction?: TransactionDatabase[] }): Category {
+    const transactionCont = entity.Transaction?.length || 0;
     return Category.create(
       {
         description: entity.description,
         user_id: entity.user_id,
         createdAt: entity.createdAt,
+        transactionCont,
       },
       new Identity(entity.id),
     );
