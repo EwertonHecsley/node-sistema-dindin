@@ -5,6 +5,7 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { CreateTransactionDto } from './dto/schemaTransactionDto';
 import { getUserIdOrThrow } from '@/shared/utils/getUserIdOrThrow';
 import { logger } from '@/shared/utils/logger';
+import { TransactionPresenter } from './presenter/TransactionPresenter';
 
 export class TransactionController {
   private readonly create: CreateTransactionUseCase;
@@ -31,7 +32,7 @@ export class TransactionController {
 
     reply.status(201).send({
       message: 'Created transaction sucessfully.',
-      transaction: result.value,
+      transaction: TransactionPresenter.toHTTP(result.value),
     });
     logger.info('Created transaction sucessfully.');
   }
