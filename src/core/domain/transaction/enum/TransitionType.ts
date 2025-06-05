@@ -1,4 +1,4 @@
 export enum TransitionType {
-    INCOME = 'INCOME',
-    EXPENSE = 'EXPENSE',
+  INCOME = 'INCOME',
+  EXPENSE = 'EXPENSE',
 }
