@@ -1,5 +1,5 @@
 import { CategoryRepository } from '@/core/domain/category/repository/CategoryRepository';
-import { CreateCategoryUseCase } from '@/core/domain/category/use-case/create';
+import { CreateCategoryUseCase } from '@/core/domain/category/use-case/Create';
 import { UserRepository } from '@/core/domain/user/repository/UserRepository';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { CreateCategoryDto } from './dto/schemaCategoryDto';
@@ -9,7 +9,7 @@ import { FindAllCategoryUseCase } from '@/core/domain/category/use-case/FindAll'
 import { schemaCategoryParamsDto } from './dto/schemaCategoryParamsDto';
 import { FindCategoryUseCase } from '@/core/domain/category/use-case/Find';
 import { getUserIdOrThrow } from '@/shared/utils/getUserIdOrThrow';
-import { UpdateCategoryUseCase } from '@/core/domain/category/use-case/update';
+import { UpdateCategoryUseCase } from '@/core/domain/category/use-case/Update';
 
 export class CategoryController {
   private readonly createCategory: CreateCategoryUseCase;
