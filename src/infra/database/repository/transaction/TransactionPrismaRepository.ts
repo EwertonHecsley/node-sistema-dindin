@@ -11,4 +11,9 @@ export class TransactionPrismaRepositoryi implements TransactionRepository {
     const result = await this.prisma.transaction.create({ data });
     return TransactionPrismaMapper.toDomain(result);
   }
+
+  async list(id: string): Promise<Transaction[]> {
+    const result = await this.prisma.transaction.findMany({ where: { user_id: id } });
+    return result.map(TransactionPrismaMapper.toDomain);
+  }
 }
