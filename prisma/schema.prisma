@@ -39,6 +39,7 @@ model Transaction {
   type        String
   category_id String   @db.Uuid
   user_id     String   @db.Uuid
+  createdAt   DateTime @default(now()) @db.Timestamp()
   category    Category @relation(fields: [category_id], references: [id])
   user        User     @relation(fields: [user_id], references: [id])
 
