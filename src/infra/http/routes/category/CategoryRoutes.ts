@@ -4,7 +4,7 @@ import { validateBody } from '../../middlewares/validate';
 import { schemaCategoryDto } from '../../controllers/category/dto/schemaCategoryDto';
 
 export class CategoryRoutes {
-  constructor(private readonly controller: CategoryController) { }
+  constructor(private readonly controller: CategoryController) {}
 
   async register(app: FastifyInstance) {
     app.post('/v1/category', {
@@ -18,7 +18,10 @@ export class CategoryRoutes {
       handler: this.controller.index.bind(this.controller),
     });
     app.put('/v1/category/:id', {
-      handler: this.controller.update.bind(this.controller)
+      handler: this.controller.update.bind(this.controller),
+    });
+    app.delete('/v1/category/:id', {
+      handler: this.controller.destroy.bind(this.controller),
     });
   }
 }
