@@ -11,13 +11,14 @@ type Request = {
 type Response = Either<NotFound | BadRequest, boolean>;
 
 export class DeleteUserUseCase {
-  constructor(private readonly userRepository: UserRepository) { }
+  constructor(private readonly userRepository: UserRepository) {}
 
   async execute({ id, user_id }: Request): Promise<Response> {
     const userExist = await this.userRepository.findById(id);
     if (!userExist) return left(new NotFound('User not found.'));
 
-    if (id == user_id) return left(new BadRequest('A logged-in user cannot delete their own account.'));
+    if (id == user_id)
+      return left(new BadRequest('A logged-in user cannot delete their own account.'));
 
     await this.userRepository.delete(id);
 
