@@ -9,11 +9,13 @@ import { FindAllCategoryUseCase } from '@/core/domain/category/use-case/FindAll'
 import { schemaCategoryParamsDto } from './dto/schemaCategoryParamsDto';
 import { FindCategoryUseCase } from '@/core/domain/category/use-case/Find';
 import { getUserIdOrThrow } from '@/shared/utils/getUserIdOrThrow';
+import { UpdateCategoryUseCase } from '@/core/domain/category/use-case/update';
 
 export class CategoryController {
   private readonly createCategory: CreateCategoryUseCase;
   private readonly findAll: FindAllCategoryUseCase;
   private readonly find: FindCategoryUseCase;
+  private readonly updateCategory: UpdateCategoryUseCase;
 
   constructor(
     private readonly categoryRepository: CategoryRepository,
@@ -22,6 +24,7 @@ export class CategoryController {
     this.createCategory = new CreateCategoryUseCase(this.categoryRepository, this.userRepository);
     this.findAll = new FindAllCategoryUseCase(this.categoryRepository, this.userRepository);
     this.find = new FindCategoryUseCase(this.userRepository, this.categoryRepository);
+    this.updateCategory = new UpdateCategoryUseCase(this.userRepository, this.categoryRepository);
   }
 
   async store(request: FastifyRequest, reply: FastifyReply): Promise<void> {
@@ -90,5 +93,32 @@ export class CategoryController {
       category: CategoryPresenter.toHTTP(result.value),
     });
     logger.info('Find category sucessfully.');
+  }
+
+  async update(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const { description } = request.body as CreateCategoryDto;
+    const user_id = getUserIdOrThrow(request, reply);
+    if (!user_id) return;
+
+    const paramsValidate = schemaCategoryParamsDto.safeParse(request.params);
+    if (!paramsValidate.success) {
+      reply.status(400).send({
+        message: paramsValidate.error.errors,
+      });
+      return;
+    }
+
+    const { id } = paramsValidate.data;
+
+    const result = await this.updateCategory.execute({ id, user_id, description });
+    if (result.isLeft()) {
+      logger.error('Error update category.');
+      const error = result.value;
+      reply.status(error.statusCode).send({ message: error.message });
+      return;
+    }
+
+    reply.status(204).send();
+    logger.info('Update category sucessfully.');
   }
 }
