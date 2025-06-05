@@ -12,6 +12,7 @@ import { UpdateUserDto } from './dto/schemaUserUpdate.Dto';
 import { DeleteUserUseCase } from '@/core/domain/user/use-case/Delete';
 import { LoginUserDto } from './dto/schemaUserLoginDto';
 import { Encrypter } from '@/shared/utils/Encrypter';
+import { getUserIdOrThrow } from '@/shared/utils/getUserIdOrThrow';
 
 export class UserController {
   private readonly createUser: CreateUserUseCase;
@@ -135,6 +136,9 @@ export class UserController {
   }
 
   async destroy(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const user_id = getUserIdOrThrow(request, reply);
+    if (!user_id) return;
+
     const paramsValidate = schemaUserParamsDto.safeParse(request.params);
     if (!paramsValidate.success) {
       reply.status(400).send({
@@ -145,7 +149,7 @@ export class UserController {
 
     const { id } = paramsValidate.data;
 
-    const result = await this.deleteUser.execute({ id });
+    const result = await this.deleteUser.execute({ id, user_id });
     if (result.isLeft()) {
       logger.error('Error deleting user.');
       const error = result.value;

@@ -17,5 +17,11 @@ export class CategoryRoutes {
     app.get('/v1/category/:id', {
       handler: this.controller.index.bind(this.controller),
     });
+    app.put('/v1/category/:id', {
+      handler: this.controller.update.bind(this.controller),
+    });
+    app.delete('/v1/category/:id', {
+      handler: this.controller.destroy.bind(this.controller),
+    });
   }
 }
