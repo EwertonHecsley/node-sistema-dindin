@@ -23,6 +23,7 @@ export class TransactionPrismaMapper {
       type: entity.type,
       category_id: entity.category_id,
       user_id: entity.user_id,
+      createdAt: entity.createdAt,
     });
   }
 }

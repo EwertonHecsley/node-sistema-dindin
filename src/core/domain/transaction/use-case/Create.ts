@@ -22,7 +22,7 @@ export class CreateTransactionUseCase {
   constructor(
     private readonly transactionRepository: TransactionRepository,
     private readonly categoryRepository: CategoryRepository,
-  ) { }
+  ) {}
 
   async execute(props: Request): Promise<Response> {
     const { category_id, user_id } = props;
