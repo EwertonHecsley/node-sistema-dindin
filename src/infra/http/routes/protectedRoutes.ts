@@ -6,6 +6,9 @@ import { UserRoutes } from './user/UserRoutes';
 import { CategoryPrismaRepository } from '@/infra/database/repository/category/CategoryPrismaRepository';
 import { CategoryController } from '../controllers/category/CategoryController';
 import { CategoryRoutes } from './category/CategoryRoutes';
+import { TransactionPrismaRepositoryi } from '@/infra/database/repository/transaction/TransactionPrismaRepository';
+import { TransactionController } from '../controllers/transaction/TransactionController';
+import { TransactionRoutes } from './transaction/TransactionRoutes';
 
 export async function protectedRoutes(app: FastifyInstance) {
   app.addHook('onRequest', authGuard);
@@ -21,4 +24,13 @@ export async function protectedRoutes(app: FastifyInstance) {
   const categoryController = new CategoryController(categoryRepository, userRepository);
   const categoryRoutes = new CategoryRoutes(categoryController);
   await categoryRoutes.register(app);
+
+  //Transaction
+  const transactionRepository = new TransactionPrismaRepositoryi();
+  const transactionController = new TransactionController(
+    categoryRepository,
+    transactionRepository,
+  );
+  const transactionroutes = new TransactionRoutes(transactionController);
+  await transactionroutes.register(app);
 }

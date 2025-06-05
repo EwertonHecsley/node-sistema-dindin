@@ -21,7 +21,7 @@ export class CreateTransactionUseCase {
   constructor(
     private readonly transactionRepository: TransactionRepository,
     private readonly categoryRepository: CategoryRepository,
-  ) {}
+  ) { }
 
   async execute(props: Request): Promise<Response> {
     const { category_id, user_id } = props;
@@ -36,13 +36,13 @@ export class CreateTransactionUseCase {
     }
 
     const typeMap: Record<string, TransitionType> = {
-      entrada: TransitionType.INCOME,
-      saida: TransitionType.EXPENSE,
+      INCOME: TransitionType.INCOME,
+      EXPENSE: TransitionType.EXPENSE,
     };
 
-    const type = typeMap[props.type.toLowerCase()];
+    const type = typeMap[props.type.toUpperCase()];
     if (!type) {
-      return left(new BadRequest("Invalid transaction type. Use 'entrada' or 'saida'."));
+      return left(new BadRequest("Invalid transaction type. Use 'INCOME' or 'EXPENSE'."));
     }
 
     const transaction = Transaction.create({
@@ -51,7 +51,7 @@ export class CreateTransactionUseCase {
       date: parsedDate,
       category_id: props.category_id,
       user_id: props.user_id,
-      type,
+      type
     });
 
     await this.transactionRepository.create(transaction);
