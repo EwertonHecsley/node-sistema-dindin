@@ -5,6 +5,7 @@ export class TransactionPresenter {
   static toHTTP(entity: Transaction, entityCategory: Category) {
     return {
       id: entity.getValueId().getValueId(),
+      type: entity.type,
       description: entity.description,
       value: entity.value,
       data: entity.createdAt.toLocaleDateString('pt-br', {
