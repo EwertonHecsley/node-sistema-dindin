@@ -13,7 +13,15 @@ export class CategoryPrismaRepository implements CategoryRepository {
   }
 
   async findById(id: string, user_id: string): Promise<Category | null> {
-    const result = await this.prisma.category.findFirst({ where: { id, user_id } });
+    const result = await this.prisma.category.findFirst({
+      where: {
+        id,
+        user_id,
+      },
+      include: {
+        Transaction: true,
+      },
+    });
     return result ? CategoryPrismaMappers.toDomain(result) : null;
   }
 
