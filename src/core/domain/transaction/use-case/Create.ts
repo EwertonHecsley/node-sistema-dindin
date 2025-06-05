@@ -5,6 +5,7 @@ import { Transaction } from '../entity/Transition';
 import { CategoryRepository } from '../../category/repository/CategoryRepository';
 import { TransitionType } from '../enum/TransitionType';
 import { BadRequest } from '@/shared/errors/custom/BadRequest';
+import { Category } from '../../category/entity/Category';
 
 type Request = {
   description: string;
@@ -15,13 +16,13 @@ type Request = {
   type: string;
 };
 
-type Response = Either<NotFound, Transaction>;
+type Response = Either<NotFound, { transaction: Transaction; category: Category }>;
 
 export class CreateTransactionUseCase {
   constructor(
     private readonly transactionRepository: TransactionRepository,
     private readonly categoryRepository: CategoryRepository,
-  ) { }
+  ) {}
 
   async execute(props: Request): Promise<Response> {
     const { category_id, user_id } = props;
@@ -51,11 +52,11 @@ export class CreateTransactionUseCase {
       date: parsedDate,
       category_id: props.category_id,
       user_id: props.user_id,
-      type
+      type,
     });
 
     await this.transactionRepository.create(transaction);
 
-    return right(transaction);
+    return right({ transaction, category: categoryExists });
   }
 }

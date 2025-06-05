@@ -1,7 +1,8 @@
+import { Category } from '@/core/domain/category/entity/Category';
 import { Transaction } from '@/core/domain/transaction/entity/Transition';
 
 export class TransactionPresenter {
-  static toHTTP(entity: Transaction) {
+  static toHTTP(entity: Transaction, entityCategory: Category) {
     return {
       id: entity.getValueId().getValueId(),
       description: entity.description,
@@ -15,6 +16,7 @@ export class TransactionPresenter {
       }),
       usuario_id: entity.user_id,
       category_id: entity.category_id,
+      name: entityCategory.description,
     };
   }
 }
