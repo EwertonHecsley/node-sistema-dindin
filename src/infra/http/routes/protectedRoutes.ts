@@ -30,6 +30,7 @@ export async function protectedRoutes(app: FastifyInstance) {
   const transactionController = new TransactionController(
     categoryRepository,
     transactionRepository,
+    userRepository,
   );
   const transactionroutes = new TransactionRoutes(transactionController);
   await transactionroutes.register(app);

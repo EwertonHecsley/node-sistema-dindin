@@ -11,5 +11,8 @@ export class TransactionRoutes {
       preHandler: validateBody(schemaTransactionDto),
       handler: this.controller.store.bind(this.controller),
     });
+    app.get('/v1/transaction', {
+      handler: this.controller.list.bind(this.controller),
+    });
   }
 }
