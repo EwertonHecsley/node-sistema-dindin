@@ -21,7 +21,15 @@ export class TransactionPrismaRepositoryi implements TransactionRepository {
     const result = await this.prisma.transaction.findFirst({
       where: { id, user_id },
     });
-    console.log(result);
+
     return result ? TransactionPrismaMapper.toDomain(result) : null;
+  }
+
+  async save(entity: Transaction): Promise<void> {
+    const data = TransactionPrismaMapper.toDatabase(entity);
+    await this.prisma.transaction.update({
+      where: { id: entity.getValueId().getValueId(), user_id: entity.user_id },
+      data,
+    });
   }
 }
