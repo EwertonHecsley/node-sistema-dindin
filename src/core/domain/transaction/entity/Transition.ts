@@ -60,4 +60,12 @@ export class Transaction extends Entity<PropsTransition> {
   set date(date: Date) {
     this.props.date = date;
   }
+
+  set category_id(category_id: string) {
+    this.props.category_id = category_id;
+  }
+
+  set type(type: TransactionType) {
+    this.props.type = type;
+  }
 }
