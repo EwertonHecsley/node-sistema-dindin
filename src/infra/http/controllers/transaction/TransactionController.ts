@@ -9,10 +9,13 @@ import { TransactionPresenter } from './presenter/TransactionPresenter';
 import { ListAllTransactions } from '@/core/domain/transaction/use-case/List';
 import { UserRepository } from '@/core/domain/user/repository/UserRepository';
 import { NotFound } from '@/shared/errors/custom/NorFound';
+import { FindTransactionUseCase } from '@/core/domain/transaction/use-case/Find';
+import { schemaTransactionParamsDto } from './dto/schemaParamsTransactionDto';
 
 export class TransactionController {
   private readonly create: CreateTransactionUseCase;
   private readonly listAll: ListAllTransactions;
+  private readonly find: FindTransactionUseCase;
 
   constructor(
     private readonly categoryRepository: CategoryRepository,
@@ -21,6 +24,11 @@ export class TransactionController {
   ) {
     this.create = new CreateTransactionUseCase(this.transactionRepository, this.categoryRepository);
     this.listAll = new ListAllTransactions(
+      this.transactionRepository,
+      this.userRepository,
+      this.categoryRepository,
+    );
+    this.find = new FindTransactionUseCase(
       this.transactionRepository,
       this.userRepository,
       this.categoryRepository,
@@ -64,5 +72,32 @@ export class TransactionController {
       transactions: result.value.map(T => TransactionPresenter.toHTTP(T.transaction, T.categgory)),
     });
     logger.info('Listed transactions sucessfully.');
+  }
+
+  async index(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const user_id = getUserIdOrThrow(request, reply);
+    if (!user_id) return;
+
+    const paramsValidate = schemaTransactionParamsDto.safeParse(request.params);
+    if (!paramsValidate.success) {
+      reply.status(400).send({ message: 'Invalid params for transaction.' });
+      return;
+    }
+
+    const { id } = paramsValidate.data;
+
+    const result = await this.find.execute({ id, user_id });
+    if (result.isLeft()) {
+      logger.error('Error finding transaction.');
+      const error = result.value;
+      reply.status(error.statusCode).send({ message: error.message });
+      return;
+    }
+
+    reply.status(200).send({
+      message: 'Found transaction sucessfully.',
+      transaction: TransactionPresenter.toHTTP(result.value.transaction, result.value.category),
+    });
+    logger.info('Found transaction sucessfully.');
   }
 }
