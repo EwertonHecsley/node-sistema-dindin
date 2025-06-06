@@ -16,4 +16,11 @@ export class TransactionPrismaRepositoryi implements TransactionRepository {
     const result = await this.prisma.transaction.findMany({ where: { user_id: id } });
     return result.map(TransactionPrismaMapper.toDomain);
   }
+
+  async findById(id: string, user_id: string): Promise<Transaction | null> {
+    const result = await this.prisma.transaction.findFirst({
+      where: { id, user_id },
+    });
+    return result ? TransactionPrismaMapper.toDomain(result) : null;
+  }
 }
