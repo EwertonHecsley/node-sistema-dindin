@@ -14,5 +14,8 @@ export class TransactionRoutes {
     app.get('/v1/transaction', {
       handler: this.controller.list.bind(this.controller),
     });
+    app.get('/v1/transaction/:id', {
+      handler: this.controller.index.bind(this.controller),
+    });
   }
 }

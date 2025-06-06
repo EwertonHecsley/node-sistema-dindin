@@ -23,8 +23,16 @@ export class TransactionController {
     private readonly userRepository: UserRepository,
   ) {
     this.create = new CreateTransactionUseCase(this.transactionRepository, this.categoryRepository);
-    this.listAll = new ListAllTransactions(this.transactionRepository, this.userRepository, this.categoryRepository);
-    this.find = new FindTransactionUseCase(this.transactionRepository, this.userRepository, this.categoryRepository);
+    this.listAll = new ListAllTransactions(
+      this.transactionRepository,
+      this.userRepository,
+      this.categoryRepository,
+    );
+    this.find = new FindTransactionUseCase(
+      this.transactionRepository,
+      this.userRepository,
+      this.categoryRepository,
+    );
   }
 
   async store(request: FastifyRequest, reply: FastifyReply): Promise<void> {
