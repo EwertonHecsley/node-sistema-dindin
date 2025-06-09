@@ -40,7 +40,7 @@ export class TransactionController {
       this.transactionRepository,
       this.userRepository,
       this.categoryRepository,
-    )
+    );
   }
 
   async store(request: FastifyRequest, reply: FastifyReply): Promise<void> {
@@ -126,7 +126,7 @@ export class TransactionController {
       id,
       user_id,
       ...props,
-      date: props.date ? new Date(props.date) : undefined
+      date: props.date ? new Date(props.date) : undefined,
     });
     if (result.isLeft()) {
       logger.error('Error updating transaction.');
