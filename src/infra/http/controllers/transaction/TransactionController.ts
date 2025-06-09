@@ -57,8 +57,8 @@ export class TransactionController {
     const result = await this.create.execute({ ...props, user_id });
     if (result.isLeft()) {
       logger.error('Erro create transaction.');
-      const error = result.value;
-      reply.status(error.statusCode).send({ message: error.message });
+      const { statusCode, message } = result.value;
+      reply.status(statusCode).send({ message });
       return;
     }
 
@@ -79,8 +79,8 @@ export class TransactionController {
 
     if (result.isLeft()) {
       logger.error('Error listing transactions.');
-      const error = result.value;
-      reply.status(error.statusCode).send({ message: error.message });
+      const { statusCode, message } = result.value;
+      reply.status(statusCode).send({ message });
       return;
     }
 
@@ -109,8 +109,8 @@ export class TransactionController {
     const result = await this.find.execute({ id, user_id });
     if (result.isLeft()) {
       logger.error('Error finding transaction.');
-      const error = result.value;
-      reply.status(error.statusCode).send({ message: error.message });
+      const { statusCode, message } = result.value;
+      reply.status(statusCode).send({ message });
       return;
     }
 
@@ -142,8 +142,8 @@ export class TransactionController {
     });
     if (result.isLeft()) {
       logger.error('Error updating transaction.');
-      const error = result.value;
-      reply.status(error.statusCode).send({ message: error.message });
+      const { statusCode, message } = result.value;
+      reply.status(statusCode).send({ message });
       return;
     }
 
@@ -168,8 +168,8 @@ export class TransactionController {
     const result = await this.delete.execute({ id, user_id });
     if (result.isLeft()) {
       logger.error('Error deleting transaction.');
-      const error = result.value;
-      reply.status(error.statusCode).send({ message: error.message });
+      const { statusCode, message } = result.value;
+      reply.status(statusCode).send({ message });
       return;
     }
 
@@ -184,8 +184,8 @@ export class TransactionController {
     const result = await this.extractUser.execute({ user_id });
     if (result.isLeft()) {
       logger.error('Error extracting transactions.');
-      const error = result.value;
-      reply.status(error.statusCode).send({ message: error.message });
+      const { statusCode, message } = result.value;
+      reply.status(statusCode).send({ message });
       return;
     }
 
