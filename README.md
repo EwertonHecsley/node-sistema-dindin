@@ -134,8 +134,7 @@ npm run test
 * Validação com Zod e middlewares do Fastify
 * Inversão de dependências via injeção manual
 * Tratamento de erros com `Either` (functor funcional)
-* Padrões de projeto: Strategy, Factory (se usados), etc.
-
+* 
 ---
 
 ## 🛠️ Autor
