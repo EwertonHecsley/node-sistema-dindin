@@ -14,6 +14,7 @@ import { schemaTransactionParamsDto } from './dto/schemaParamsTransactionDto';
 import { UpdateTransactionUseCase } from '@/core/domain/transaction/use-case/Update';
 import { UpdateTransactionDto } from './dto/schemaTransactionUpdateDto';
 import { DeleteTransactionUseCase } from '@/core/domain/transaction/use-case/Delete';
+import { ExtractUseCase } from '@/core/domain/transaction/use-case/Extract';
 
 export class TransactionController {
   private readonly create: CreateTransactionUseCase;
@@ -21,6 +22,7 @@ export class TransactionController {
   private readonly find: FindTransactionUseCase;
   private readonly save: UpdateTransactionUseCase;
   private readonly delete: DeleteTransactionUseCase;
+  private readonly extractUser: ExtractUseCase;
 
   constructor(
     private readonly categoryRepository: CategoryRepository,
@@ -44,6 +46,7 @@ export class TransactionController {
       this.categoryRepository,
     );
     this.delete = new DeleteTransactionUseCase(this.transactionRepository, this.userRepository);
+    this.extractUser = new ExtractUseCase(this.transactionRepository, this.userRepository);
   }
 
   async store(request: FastifyRequest, reply: FastifyReply): Promise<void> {
@@ -166,5 +169,25 @@ export class TransactionController {
 
     reply.status(204).send();
     logger.info('Deleted transaction sucessfully.');
+  }
+
+  async extract(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const user_id = getUserIdOrThrow(request, reply);
+    if (!user_id) return;
+
+    const result = await this.extractUser.execute({ user_id });
+    if (result.isLeft()) {
+      logger.error('Error extracting transactions.');
+      const error = result.value;
+      reply.status(error.statusCode).send({ message: error.message });
+      return;
+    }
+
+    reply.status(200).send({
+      message: 'Extracted transactions sucessfully.',
+      entrada: result.value.entrada,
+      saida: result.value.saida,
+    });
+    logger.info('Extracted transactions sucessfully.');
   }
 }
