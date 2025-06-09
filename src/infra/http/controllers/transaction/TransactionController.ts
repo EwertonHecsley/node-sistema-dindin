@@ -13,12 +13,14 @@ import { FindTransactionUseCase } from '@/core/domain/transaction/use-case/Find'
 import { schemaTransactionParamsDto } from './dto/schemaParamsTransactionDto';
 import { UpdateTransactionUseCase } from '@/core/domain/transaction/use-case/Update';
 import { UpdateTransactionDto } from './dto/schemaTransactionUpdateDto';
+import { DeleteTransactionUseCase } from '@/core/domain/transaction/use-case/Delete';
 
 export class TransactionController {
   private readonly create: CreateTransactionUseCase;
   private readonly listAll: ListAllTransactions;
   private readonly find: FindTransactionUseCase;
   private readonly save: UpdateTransactionUseCase;
+  private readonly delete: DeleteTransactionUseCase;
 
   constructor(
     private readonly categoryRepository: CategoryRepository,
@@ -40,7 +42,8 @@ export class TransactionController {
       this.transactionRepository,
       this.userRepository,
       this.categoryRepository,
-    )
+    );
+    this.delete = new DeleteTransactionUseCase(this.transactionRepository, this.userRepository);
   }
 
   async store(request: FastifyRequest, reply: FastifyReply): Promise<void> {
@@ -126,7 +129,7 @@ export class TransactionController {
       id,
       user_id,
       ...props,
-      date: props.date ? new Date(props.date) : undefined
+      date: props.date ? new Date(props.date) : undefined,
     });
     if (result.isLeft()) {
       logger.error('Error updating transaction.');
@@ -139,5 +142,29 @@ export class TransactionController {
       message: 'Updated transaction sucessfully.',
     });
     logger.info('Updated transaction sucessfully.');
+  }
+
+  async destroy(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const user_id = getUserIdOrThrow(request, reply);
+    if (!user_id) return;
+
+    const paramsValidate = schemaTransactionParamsDto.safeParse(request.params);
+    if (!paramsValidate.success) {
+      reply.status(400).send({ message: 'Invalid params for transaction.' });
+      return;
+    }
+
+    const { id } = paramsValidate.data;
+
+    const result = await this.delete.execute({ id, user_id });
+    if (result.isLeft()) {
+      logger.error('Error deleting transaction.');
+      const error = result.value;
+      reply.status(error.statusCode).send({ message: error.message });
+      return;
+    }
+
+    reply.status(204).send();
+    logger.info('Deleted transaction sucessfully.');
   }
 }

@@ -18,9 +18,12 @@ export class TransactionRoutes {
     app.get('/v1/transaction/:id', {
       handler: this.controller.index.bind(this.controller),
     });
+    app.delete('/v1/transaction/:id', {
+      handler: this.controller.destroy.bind(this.controller),
+    });
     app.put('/v1/transaction/id:', {
       preHandler: validateBody(schemaTransactionUpdateDto),
-      handler: this.controller.update.bind(this.controller)
+      handler: this.controller.update.bind(this.controller),
     });
   }
 }

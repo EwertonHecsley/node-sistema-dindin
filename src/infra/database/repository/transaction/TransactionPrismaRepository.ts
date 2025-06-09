@@ -32,4 +32,10 @@ export class TransactionPrismaRepositoryi implements TransactionRepository {
       data,
     });
   }
+
+  async delete(id: string, user_id: string): Promise<void> {
+    await this.prisma.transaction.delete({
+      where: { id, user_id },
+    });
+  }
 }
