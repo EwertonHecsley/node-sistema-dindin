@@ -62,7 +62,7 @@ Authorization: Bearer <token>
 ## 📦 Instalação
 
 ```bash
-git clone https://github.com/seu-usuario/financial-api.git
+git clone https://github.com/EwertonHecsley/financial-api.git
 cd financial-api
 npm install
 ```
