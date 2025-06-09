@@ -165,5 +165,6 @@ export class TransactionController {
     }
 
     reply.status(204).send();
+    logger.info('Deleted transaction sucessfully.');
   }
 }

@@ -5,7 +5,7 @@ import { schemaTransactionDto } from '../../controllers/transaction/dto/schemaTr
 import { schemaTransactionUpdateDto } from '../../controllers/transaction/dto/schemaTransactionUpdateDto';
 
 export class TransactionRoutes {
-  constructor(private readonly controller: TransactionController) {}
+  constructor(private readonly controller: TransactionController) { }
 
   async register(app: FastifyInstance) {
     app.post('/v1/transaction', {
@@ -18,12 +18,12 @@ export class TransactionRoutes {
     app.get('/v1/transaction/:id', {
       handler: this.controller.index.bind(this.controller),
     });
+    app.delete('/v1/transaction/:id', {
+      handler: this.controller.destroy.bind(this.controller),
+    });
     app.put('/v1/transaction/id:', {
       preHandler: validateBody(schemaTransactionUpdateDto),
       handler: this.controller.update.bind(this.controller),
-    });
-    app.delete('/v1/transaction/:id', {
-      handler: this.controller.destroy.bind(this.controller),
     });
   }
 }
