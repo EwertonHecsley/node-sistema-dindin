@@ -73,7 +73,10 @@ export class TransactionController {
     const user_id = getUserIdOrThrow(request, reply);
     if (!user_id) return;
 
-    const result = await this.listAll.execute({ user_id });
+    const filter = (request.query as { filter?: string }).filter;
+
+    const result = await this.listAll.execute({ user_id, filter });
+
     if (result.isLeft()) {
       logger.error('Error listing transactions.');
       const error = result.value;
@@ -82,11 +85,14 @@ export class TransactionController {
     }
 
     reply.status(200).send({
-      message: 'Listed transactions sucessfully.',
-      transactions: result.value.map(T => TransactionPresenter.toHTTP(T.transaction, T.categgory)),
+      message: 'Listed transactions successfully.',
+      transactions: result.value.map(T =>
+        TransactionPresenter.toHTTP(T.transaction, T.categgory),
+      ),
     });
-    logger.info('Listed transactions sucessfully.');
+    logger.info('Listed transactions successfully.');
   }
+
 
   async index(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const user_id = getUserIdOrThrow(request, reply);
